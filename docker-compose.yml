@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    command: bash -c "python main/manage.py migrate && python main/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+
+  db:
+    container_name: db
+
+    image: postgres:latest
+
+    environment:
+      - POSTGRES_DB:vod_project
+      - POSTGRES_USER:vod
+      - POSTGRES_PASSWORD:vod-project
+      - POSTGRES_HOST:localhost
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: always
+
+volumes:
+  postgres_data:
