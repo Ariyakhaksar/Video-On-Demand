@@ -8,6 +8,8 @@ services:
       - db
     ports:
       - "8000:8000"
+    networks:
+      - main
 
   db:
     container_name: db
@@ -18,7 +20,7 @@ services:
       - POSTGRES_DB:vod_project
       - POSTGRES_USER:vod
       - POSTGRES_PASSWORD:vod-project
-      - POSTGRES_HOST:localhost
+      - POSTGRES_HOST:db
 
     ports:
       - "5432:5432"
@@ -28,5 +30,14 @@ services:
 
     restart: always
 
+    networks:
+      - main
+
 volumes:
   postgres_data:
+
+networks:
+  main:
+    
+  
+  
