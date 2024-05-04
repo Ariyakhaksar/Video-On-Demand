@@ -10,10 +10,9 @@ from .serializers import (
 )
 
 import random
+
+
 # Create your views here.
-
-
-
 class CategorysAPIView(APIView):
     """
         List all catgorys

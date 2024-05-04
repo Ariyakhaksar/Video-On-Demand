@@ -71,7 +71,7 @@ ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -137,6 +137,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -144,7 +145,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=2),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -215,16 +216,16 @@ AWS_S3_FILE_OVERWRITE = False
 # Gmail...
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'testpass935@gmail.com' # Gmail with which you created app_password
+EMAIL_HOST_USER = '' # Gmail with which you created app_password
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = 'rcbtktluoupbwlfw' # App Password
+EMAIL_HOST_PASSWORD = '' # App Password
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL='Django VOD' #Optional
+DEFAULT_FROM_EMAIL='Django/Next.js VOD' #Optional
 
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Your Project Django VOD API',
-    'DESCRIPTION': 'Url Port ======>  http://127.0.0.1:8000/ ',
+    'DESCRIPTION': 'آدرس ثابت =======> http://127.0.0.1:8000',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS

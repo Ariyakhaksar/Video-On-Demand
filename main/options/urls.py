@@ -4,10 +4,10 @@ from .import views
 
 urlpatterns = [
     path('faqs/',views.FAQsAPIView.as_view(),name='faqs'),
-
+    # Save movies
     path('list/saves/movie/',views.ListSaveMoviesAPIView.as_view(),name='save_movie_list'),
     path('save/movie/<int:movie_id>/',views.SaveMovieAPIView.as_view(),name='seve_movie'),
-
+    #Save seryals
     path('list/saves/seryal/',views.ListSaveSeryalAPIView.as_view(),name='save_seryal_list'),
     path('save/seryal/<int:seryal_id>/',views.SaveSeryalAPIView.as_view(),name='seve_seryal'),
     # Vote movies

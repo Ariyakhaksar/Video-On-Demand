@@ -22,7 +22,6 @@ class SaveMovieSerializer(serializers.ModelSerializer):
         model = SaveMovie
         fields = ('user','movie')
 
-
 class SaveSeryalSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only = True)
     seryal = serializers.StringRelatedField(read_only = True)
@@ -30,7 +29,6 @@ class SaveSeryalSerializer(serializers.ModelSerializer):
     class Meta:
         model = SaveSeryal
         fields = ('user','seryal')
-
 
 class CommentMovieSerializer(serializers.ModelSerializer):
     class Meta:

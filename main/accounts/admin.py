@@ -24,7 +24,6 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         ('Create Account',{'fields':('phone','name','lastname','email','password','password2')}),
     )
-
 admin.site.register(User,UserAdmin)
 
 

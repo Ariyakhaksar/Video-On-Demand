@@ -3,34 +3,41 @@ from django.contrib.auth import login , authenticate, logout
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.tokens import RefreshToken
+
+from drf_spectacular.utils import extend_schema
 
 from .utils import send_otp
 from .models import OTP , User
 from .serializers import (
-
     MyTokenObtainPairSerializer,
     UserAuthenticationSerializer,
     UserRegisterSerializer,
     VeryfyOtpSerializer,
+    UserLogoutSerializer
 )
 
 import random
+
+
 # Create your views here.
-
-
-
 class MyTokenObtainPairView(TokenObtainPairView):
     """
-        Create token and logined user
+        Create token and refresh_token and logined user
 
         Requeired filds:
 
-        phone: 0910.......
+        phone: 09.......
 
-        password: password....
+        password: your password....
+
+        Note:
+
+            token: Expires after one hour ⏰
+
+            refresh_token: Expires after one day 🕒
     """
     serializer_class = MyTokenObtainPairSerializer
 
@@ -53,7 +60,7 @@ class UserAuthenticationAPIView(APIView):
 
         if srz_data.is_valid():
             vd = srz_data.validated_data
-            create_otp = random.randint(100000,999999)
+            create_otp = random.randint(1000,9999)
             send_otp(vd['phone'] , create_otp)
             OTP.objects.create(phone = vd['phone'] , code = create_otp)
             request.session['authentication'] = {
@@ -67,7 +74,7 @@ class VeryfyOtpAPIView(APIView):
     """
         Level 2 Register users
 
-        In this view, a 6-digit code is sent to the user's phone.
+        In this view, a 4-digit code is sent to the user's phone.
 
         Required fields: code 
 
@@ -98,13 +105,11 @@ class UserRegisterAPIView(APIView):
         Required fields:
         - name
         - lastname
-        - email ===> not required
+        - email 
         - password
         - password2
 
         Note: An error will be displayed if the fields "Password" and "Password2" do not match.
-
-        Note: Filling in the "email" field is not required.
 
         Note: If the email field already exists, it will throw an error. 
 
@@ -127,11 +132,21 @@ class UserRegisterAPIView(APIView):
             return Response(data=srz_data.data , status=status.HTTP_201_CREATED)
         return Response(srz_data.errors,status=status.HTTP_400_BAD_REQUEST)
     
+
+class UserLogoutAPIView(APIView):
+
+    """
+        In this view, the refresh_token expires ❌. 
+        You should delete the access_token so that the user loses access. 👍🔒
+
+        Note: The user must be logged in. 💻🔒
+    """
     
-    
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserLogoutSerializer
 
-            
-
-
-
-
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(data={'msg': 'User Logout...'}, status=status.HTTP_200_OK)

@@ -56,7 +56,7 @@ class ListSaveMoviesAPIView(APIView):
 
     def get(self , request):
         user = request.user
-
+        
         queryset = SaveMovie.objects.filter(user = user)
         srz_data = self.serializer_class(instance=queryset , many=True)
         return Response(data=srz_data.data , status=status.HTTP_200_OK)

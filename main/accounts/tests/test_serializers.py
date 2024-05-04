@@ -38,7 +38,7 @@ class TestVeryfyOtpSerializer(TestCase):
 
     def test_valid_data(self):
         serializer = VeryfyOtpSerializer(data={
-            'code':'123456'
+            'code':'1234'
         })
         self.assertTrue(serializer.is_valid())
 

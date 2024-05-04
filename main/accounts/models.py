@@ -44,7 +44,7 @@ class User(AbstractBaseUser,PermissionsMixin):
 
 class OTP(models.Model):
     phone = models.CharField(max_length=11 , verbose_name ="تلفن")
-    code = models.SmallIntegerField(verbose_name ="کد ( یک کد شش رقمی است که به تلفن کاربر ارسال می‌شود در مرحله رجیستر کردن )")
+    code = models.SmallIntegerField(verbose_name ="کد ( یک کد چهار رقمی است که به تلفن کاربر ارسال می‌شود , در مرحله رجیستر کردن )")
 
     created =models.DateTimeField(auto_now_add=True)
     updated =models.DateTimeField(auto_now=True)

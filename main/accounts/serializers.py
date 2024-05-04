@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
 
 from rest_framework import serializers
+from rest_framework.response import Response
 
+from rest_framework_simplejwt.tokens import RefreshToken , TokenError
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from .models import User
@@ -25,7 +27,7 @@ class VeryfyOtpSerializer(serializers.Serializer):
 class UserRegisterSerializer(serializers.Serializer):
     name = serializers.CharField()
     lastname = serializers.CharField()
-    email = serializers.EmailField(required = False)
+    email = serializers.EmailField()
     password = serializers.CharField()
     password2 = serializers.CharField()
 
@@ -54,4 +56,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
     
+class UserLogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
 
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self):
+        try:
+            RefreshToken(self.token).blacklist()
+            return True
+        
+        except TokenError:
+            raise serializers.ValidationError('Bad Tokens...')

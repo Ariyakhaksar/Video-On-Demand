@@ -24,7 +24,6 @@ class VoteMovieAdmin(admin.ModelAdmin):
 class VoteSeryalAdmin(admin.ModelAdmin):
     list_display = ['user' , 'seryal' , 'liked']
 
-
 @admin.register(CommentMovie)
 class CommentMovieAdmin(admin.ModelAdmin):
     list_display = ['user' , 'movie' ,'id']
