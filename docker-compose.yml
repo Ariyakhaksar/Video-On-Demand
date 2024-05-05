@@ -17,10 +17,9 @@ services:
     image: postgres:latest
 
     environment:
-      - POSTGRES_DB:vod_project
-      - POSTGRES_USER:vod
-      - POSTGRES_PASSWORD:vod-project
-      - POSTGRES_HOST:db
+      - POSTGRES_DB=vod_project
+      - POSTGRES_USER=vod
+      - POSTGRES_PASSWORD=vod-project
 
     ports:
       - "5432:5432"
