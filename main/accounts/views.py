@@ -16,7 +16,8 @@ from .serializers import (
     UserAuthenticationSerializer,
     UserRegisterSerializer,
     VeryfyOtpSerializer,
-    UserLogoutSerializer
+    UserLogoutSerializer,
+    UserProfileSerializer
 )
 
 import random
@@ -150,3 +151,25 @@ class UserLogoutAPIView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(data={'msg': 'User Logout...'}, status=status.HTTP_200_OK)
+
+
+class UserProfileAPIView(APIView):
+
+    """
+        In this view, the user's ID is taken and the user's profile is displayed
+
+        Note :
+            Each user [ user who is currently logged in ] can only view their own profile
+    """
+
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def get(self , request , user_id):
+        user = User.objects.get(id = user_id)
+
+        if user.id == request.user.id:
+            serializer = self.serializer_class(instance=user)
+            return Response(data=serializer.data , status=status.HTTP_200_OK)
+        return Response('You do not have access',status=status.HTTP_403_FORBIDDEN)
+    
