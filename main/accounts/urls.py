@@ -12,6 +12,9 @@ urlpatterns = [
     path('veryfy/otp/',views.VeryfyOtpAPIView.as_view() , name='veryfy'),
     path('register/',views.UserRegisterAPIView.as_view(),name='register'),
 
-    path('logout/',views.UserLogoutAPIView.as_view(),name='logout')
+    path('logout/',views.UserLogoutAPIView.as_view(),name='logout'),
+
+    # Profile users
+    path('profile/user/<int:user_id>/',views.UserProfileAPIView.as_view(),name='profile')
 
 ]

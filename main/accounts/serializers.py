@@ -52,6 +52,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['name'] = user.name
         token['lastname'] = user.lastname
         token['password'] = user.password
+        token['is_admin'] = user.is_admin
         # ...
 
         return token
@@ -70,3 +71,8 @@ class UserLogoutSerializer(serializers.Serializer):
         
         except TokenError:
             raise serializers.ValidationError('Bad Tokens...')
+        
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('phone' , 'name' , 'lastname' , 'email' , 'is_admin')
