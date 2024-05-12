@@ -15,6 +15,6 @@ urlpatterns = [
     path('logout/',views.UserLogoutAPIView.as_view(),name='logout'),
 
     # Profile users
-    path('profile/user/<int:user_id>/',views.UserProfileAPIView.as_view(),name='profile')
+    path('profile/user/',views.UserProfileAPIView.as_view(),name='profile')
 
 ]
