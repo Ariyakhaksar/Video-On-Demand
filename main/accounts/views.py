@@ -165,8 +165,9 @@ class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
 
-    def get(self , request , user_id):
-        user = User.objects.get(id = user_id)
+    def get(self , request):
+        user = request.user.id
+        user = User.objects.get(id = user)
 
         if user.id == request.user.id:
             serializer = self.serializer_class(instance=user)
