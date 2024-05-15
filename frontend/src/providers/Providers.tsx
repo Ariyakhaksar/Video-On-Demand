@@ -17,11 +17,12 @@ const Providers = ({ children }: Props) => {
          fontFamily: "var(--font-yekan)",
       },
    });
+
    return (
-      <QueryClientProvider client={queryClient}>
-         <ReactQueryDevtools initialIsOpen={false} />
-         <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </QueryClientProvider>
+         <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools initialIsOpen={false} />
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+         </QueryClientProvider>
    );
 };
 

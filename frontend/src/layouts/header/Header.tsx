@@ -1,16 +1,25 @@
 "use client";
 import IconButtons from "@/components/elements/IconButtons";
 import CustomButton from "@/components/elements/LoginButton";
+import { AxiosResponse } from "axios";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import { MdPerson } from "react-icons/md";
 import { RiSearch2Line } from "react-icons/ri";
 
-type Props = {};
+type Props = {
+   userInfo: {
+      data: AxiosResponse<any, any> | undefined;
+      isLoading: boolean;
+      status: "error" | "success" | "pending";
+      error: Error | null;
+   };
+};
 
-const Header = (props: Props) => {
+const Header = ({}: Props) => {
+   const [isLoading, setIsLoading] = useState(false);
    const [color, setColor] = useState(false);
    const changeColor = () => {
       if (window.scrollY >= 100) setColor(true);
@@ -24,7 +33,11 @@ const Header = (props: Props) => {
    return (
       <header
          className={`w-full transition-all ease-in ${
-            pathname == "/" ? (color ? "bg-zinc-900 fixed top-0" : " fixed top-0 ") : "bg-zinc-900"
+            pathname == "/"
+               ? color
+                  ? "bg-zinc-900 fixed top-0"
+                  : " fixed top-0 "
+               : "bg-zinc-900"
          }`}
          style={{ zIndex: "1000" }}
       >
@@ -59,12 +72,33 @@ const Header = (props: Props) => {
                   <IconButtons tooltip_text="" icon={<FaBars />} />
                </div>
                <IconButtons tooltip_text="جست و جو" icon={<RiSearch2Line />} />
-               <CustomButton loading={false}>
-                  <span className="text-xl ml-2">
-                     <MdPerson />
-                  </span>
-                  ورود / عضویت
-               </CustomButton>
+               <Link
+                  href={"/auth/signin"}
+                  className={`${isLoading && "pointer-events-none"}`}
+               >
+                  <CustomButton
+                     loading={isLoading}
+                     onClick={() => {
+                        redirect("/auth/sigin");
+                     }}
+                  >
+                     {"error" !== "error" ? (
+                        <>
+                           <span className="text-xl ml-2">
+                              <MdPerson />
+                           </span>
+                           پنل کاربری
+                        </>
+                     ) : (
+                        <>
+                           <span className="text-xl ml-2">
+                              <MdPerson />
+                           </span>
+                           ورود / عضویت
+                        </>
+                     )}
+                  </CustomButton>
+               </Link>
             </div>
          </section>
       </header>

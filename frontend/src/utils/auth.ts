@@ -1,7 +1,9 @@
 import zxcvbn from "zxcvbn";
 
 import { hash, compare } from "bcryptjs";
-import { SigninType } from "@/types/User";
+import { SigninType, TokenDetails } from "@/types/User";
+import { jwtDecode } from "jwt-decode";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 // import { SignupType } from "@/types/user";
 // import { SignInData, SignUpData } from "@/types/user";
 
@@ -87,11 +89,13 @@ const validateLogin = (values: SigninType) => {
    const errors = { phone: "", password: "" };
    if (!values.phone) {
       errors.phone = "لطفا فیلد شماره موبایل را وارد کنید !";
-   }
-   else if (values.phone.charAt(0) !== "0" || values.phone.charAt(1) !== "9") {
+   } else if (
+      values.phone.charAt(0) !== "0" ||
+      values.phone.charAt(1) !== "9"
+   ) {
       errors.phone = "شماره موبایل باید با 09 آغاز شود !";
-   }else if(values.phone.length !== 11) {
-    errors.phone = "شماره موبایل باید 11 رقم باشد !"
+   } else if (values.phone.length !== 11) {
+      errors.phone = "شماره موبایل باید 11 رقم باشد !";
    }
    if (!values.password) {
       errors.password = "لطفا فیلد پسورد را وارد !";
@@ -108,4 +112,43 @@ export {
    //    validateRegister,
    passwordScore,
    validateLogin,
+};
+
+export const decodedAccessToken = (
+   accessToken: string | undefined | RequestCookie
+) => {
+   let user: TokenDetails | undefined = undefined;
+   if (!accessToken) return { user: undefined, status: 401 };
+   const { user_id, phone, name, lastname, is_admin }: TokenDetails = jwtDecode(
+      accessToken.toString()
+   );
+   if (!user_id) {
+      return { user: undefined, status: 401 };
+   }
+   user = {
+      user_id,
+      phone,
+      name,
+      lastname,
+      is_admin,
+   };
+   return { user, status: 200 };
+};
+
+export const validateRegisterStepOne = (values: { phone: string }) => {
+   const errors = { phone: "" };
+   if (!values.phone) {
+      errors.phone = "لطفا فیلد شماره موبایل را وارد کنید !";
+   } else if (
+      values.phone.charAt(0) !== "0" ||
+      values.phone.charAt(1) !== "9"
+   ) {
+      errors.phone = "شماره موبایل باید با 09 آغاز شود !";
+   } else if (values.phone.length !== 11) {
+      errors.phone = "شماره موبایل باید 11 رقم باشد !";
+   }
+   if (errors.phone.length === 0) {
+      return {};
+   }
+   return errors;
 };

@@ -1,11 +1,10 @@
-import React from 'react'
+import LoadingPage from "@/components/modules/LoadingPage";
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 const loading = (props: Props) => {
-  return (
-    <div>loading...</div>
-  )
-}
+   return <LoadingPage />;
+};
 
-export default loading
+export default loading;

@@ -1,5 +1,5 @@
 "use client";
-import { Button, ButtonProps, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import LoadingButton, { LoadingButtonProps } from "@mui/lab/LoadingButton";
 
 import React from "react";
@@ -18,6 +18,8 @@ const LoadingCButton = styled(LoadingButton)<LoadingButtonProps>(
       },
       "&:disabled": {
          backgroundColor: "#4e46e597",
+         color : "#e4e4e7",
+         opacity : "0.5"
       },
    })
 );
@@ -25,15 +27,24 @@ type props = {
    children: React.ReactNode;
    loading?: boolean;
    type?: "button" | "submit" | "reset";
+   onClick?: () => void;
+   disabled?: boolean;
 };
 
 const CustomButton = ({
    children,
    loading = false,
    type = "button",
+   onClick,
+   disabled = false,
 }: props) => {
    return (
-      <LoadingCButton loading={loading} disabled={loading} type={type}>
+      <LoadingCButton
+         loading={loading}
+         disabled={loading || disabled}
+         type={type}
+         onClick={onClick}
+      >
          {children}
       </LoadingCButton>
    );

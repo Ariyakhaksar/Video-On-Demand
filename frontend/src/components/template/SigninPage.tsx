@@ -7,12 +7,16 @@ import SigninForm from "../modules/SigninForm";
 import { validateLogin } from "@/utils/auth";
 import { LoginUserApi } from "@/services/auth";
 import { setCookie } from "@/utils/cookie";
+import { redirect, useRouter } from "next/navigation";
 type Props = {};
 
 const SigninPage = (props: Props) => {
-
-   const [isLoading , setIsLoading] = useState(false)
-
+   const [isLoading, setIsLoading] = useState(false);
+   const [result, setResult] = useState({
+      text: "",
+      status: 0,
+   });
+   const router = useRouter();
    const LoginFormik = useFormik({
       initialValues: {
          phone: "",
@@ -21,15 +25,22 @@ const SigninPage = (props: Props) => {
       validate: validateLogin,
       onSubmit: async (values) => {
          setIsLoading(true);
-         const { res, error } = await LoginUserApi(values);
-
-         if (res) {
+         const { res } = await LoginUserApi(values);
+         if (res && res?.status == 200) {
+            setResult({
+               text: "خوش آمدید !  در حال انتقال به پنل کاربری ....",
+               status: 200,
+            });
+            setCookie(res?.data);
+            setTimeout(() => {
+               router.push("/dashboard");
+            }, 1000);
+         } else {
             setIsLoading(false);
-            setCookie(res.data);
-         }
-         if (error) {
-            setIsLoading(false);
-            console.log(error);
+            setResult({
+               text: "شماره موبایل یا پسورد شما اشتباه است لطفا مجددا امتحان کنید !",
+               status: 401,
+            });
          }
       },
    });
@@ -49,6 +60,18 @@ const SigninPage = (props: Props) => {
                   <h1>ورود به حساب کاربری</h1>
                </div>
                <div>
+                  <div
+                     className={`w-full rounded-md text-sm overflow-hidden transition-all ease-in
+                     ${
+                        result.status !== 401 ? "bg-green-800" : "bg-red-500"
+                     } mx-auto ${
+                        result.status == 0
+                           ? "h-0 px-0 py-0 mt-3"
+                           : "px-5 py-4 mt-3"
+                     }`}
+                  >
+                     <p>{result.text}</p>
+                  </div>
                   <form onSubmit={handleSubmit}>
                      <SigninForm
                         values={values}
@@ -79,7 +102,7 @@ const SigninPage = (props: Props) => {
                </div>
             </div>
          </div>
-         s
+         
       </section>
    );
 };

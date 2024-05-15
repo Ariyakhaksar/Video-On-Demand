@@ -1,5 +1,13 @@
 import { FormikErrors, FormikTouched } from "formik";
 
+export type TokenDetails = {
+   user_id: number;
+   phone: string;
+   name: string;
+   lastname: string;
+   is_admin: boolean;
+};
+
 export type SigninType = {
    phone: string;
    password: string;

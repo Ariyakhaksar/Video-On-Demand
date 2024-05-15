@@ -9,3 +9,6 @@
   box-sizing: border-box;
 }
 
+.otpInputBoxError input{
+  border: 2px solid #f87171;
+}

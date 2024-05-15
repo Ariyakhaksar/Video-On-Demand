@@ -1,10 +1,11 @@
+import SignupPage from '@/components/template/SignupPage'
 import React from 'react'
 
 type Props = {}
 
 const page = (props: Props) => {
   return (
-    <div>ثبت نام</div>
+    <SignupPage />
   )
 }
 
