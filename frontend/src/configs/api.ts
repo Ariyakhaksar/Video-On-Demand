@@ -1,6 +1,7 @@
 import { getNewTokens } from "@/services/token";
-import { getCookie, setCookie } from "@/utils/cookie";
+import { getCookie, setCookie, setCookieAuth } from "@/utils/cookie";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const api = axios.create({
    baseURL: "http://127.0.0.1:8000/",
@@ -31,8 +32,9 @@ api.interceptors.response.use(
       if (error.response.status === 401 && !originalRequest._retry) {
          originalRequest._retry = true;
          const res = await getNewTokens();
-         if (!res?.response) return;
-         setCookie(res.response.data);
+
+         if (!res) return;
+         setCookieAuth(res.data);
          return api(originalRequest);
       }
    }

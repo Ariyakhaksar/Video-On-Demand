@@ -20,44 +20,42 @@ const LoginUserApi = async (values: SigninType) => {
    }
 };
 
+axios.defaults.withCredentials = true;
+
 const RegisterUserSendOTP = async (values: { phone: string }) => {
-   const phone = p2e(values.phone).toString();
+   const phone = values.phone.toString(); // Assuming p2e is a function to convert Persian to English digits
    try {
       const response = await axios.post(
          "http://127.0.0.1:8000/accounts/authentication/",
          { phone }
       );
       return { response: response };
-   } catch (error: any) {
-      return { error };
+   } catch (error) {
+      if (axios.isAxiosError(error)) {
+         return { error: error.response ? error.response.data : error.message };
+      } else {
+         return { error: "Unexpected error occurred" };
+      }
    }
 };
 
-const RegisterUserCheckOTP = async (otp: number | string) => {
-   const cookies = getCookie("sessionid");
-   console.log(cookies)
+const RegisterUserCheckOTP = async (otp: number) => {
+   console.log(getCookie("sessionid"));
    try {
-      const code = p2e(otp);
-      const response = await axios.post(
+      const res = await axios.post(
          "http://127.0.0.1:8000/accounts/veryfy/otp/",
-         { code },
-         {
-            // withCredentials: true,
-            headers: {
-               Cookie: `csrftoken= "HxehdO6Dgwht9111vNApPwl50z7v7bRW"; sessionid=${cookies}; `,
-               Cache: "no-cache",
-               Accept: "application/json",
-               "Content-Type": "application/json",
-               "Access-Control-Allow-Origin": "*",
-               "Access-Control-Allow-Headers": "*",
-               "Access-Control-Allow-Credentials": "true",
-            },
-         }
+         { code: otp }
       );
-      return { response: response };
-   } catch (error: any) {
-      return { error };
+      console.log(res.data);
+   } catch (error) {
+      if (axios.isAxiosError(error)) {
+         console.error(
+            "Error verifying OTP:",
+            error.response ? error.response.data : error.message
+         );
+      } else {
+         console.error("Unexpected error:", error);
+      }
    }
 };
-
 export { LoginUserApi, RegisterUserSendOTP, RegisterUserCheckOTP };

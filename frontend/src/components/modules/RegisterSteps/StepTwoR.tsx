@@ -51,8 +51,10 @@ const StepTwoR = (props: Props) => {
             return setError("کد وارد شده معتبر نیست !");
          }
       }
-      const res = await RegisterUserCheckOTP(otp);
-      console.log(res)
+      document.cookie = `sessionid=${"ithybee8tu0lwk3hnz4hvdi5lo4vrsyd"}; max-age=${1 * 60 * 60}`;
+      console.log(document.cookie);
+      const res = await RegisterUserCheckOTP(+otp);
+      // console.log(res);
       // if (res.error) {
       //    if (res.error.response.status === 500) {
       //       return setError("مشکلی در سمت سرور به وجود آمده است !");

@@ -17,8 +17,8 @@ export default function RootLayout({
 }>) {
 
    return (
-      <html lang="fa" dir="rtl">
-         <body className={Yekan.className}>
+      <html lang="fa" dir="rtl" suppressHydrationWarning>
+         <body className={`${Yekan.className} bg-zinc-200 dark:bg-zinc-950`}>
             <Providers>
                <Layouts>{children}</Layouts>
             </Providers>

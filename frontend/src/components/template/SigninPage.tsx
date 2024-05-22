@@ -6,8 +6,10 @@ import Link from "next/link";
 import SigninForm from "../modules/SigninForm";
 import { validateLogin } from "@/utils/auth";
 import { LoginUserApi } from "@/services/auth";
-import { setCookie } from "@/utils/cookie";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { setCookieAuth } from "@/utils/cookie";
+
 type Props = {};
 
 const SigninPage = (props: Props) => {
@@ -31,7 +33,7 @@ const SigninPage = (props: Props) => {
                text: "خوش آمدید !  در حال انتقال به پنل کاربری ....",
                status: 200,
             });
-            setCookie(res?.data);
+            setCookieAuth(res?.data);
             setTimeout(() => {
                router.push("/dashboard");
             }, 1000);
@@ -102,7 +104,6 @@ const SigninPage = (props: Props) => {
                </div>
             </div>
          </div>
-         
       </section>
    );
 };

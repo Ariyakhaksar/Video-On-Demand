@@ -1,8 +1,25 @@
+import Cookies from "js-cookie";
+
 const setCookie = (tokens: { access: string; refresh: string }) => {
    document.cookie = `access=${tokens.access}; max-age=${1 * 60 * 60}`;
    document.cookie = `refresh=${tokens.refresh}; max-age=${1 * 24 * 60 * 60}`;
 };
+const setCookieAuth = (tokens: { access: string; refresh: string }) => {
+   Cookies.set("access", tokens.access, {
+      expires: 1 / 24, // 1 hour
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+   });
 
+   // تنظیم کوکی 'refresh'
+   Cookies.set("refresh", tokens.refresh, {
+      expires: 1, // 1 day
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+   });
+};
 const getCookie = (cookieName: string) => {
    return document.cookie
       .split(";")
@@ -10,15 +27,5 @@ const getCookie = (cookieName: string) => {
       ?.split("=")[1];
 };
 
-const delCookie = () => {
-   const cookies = document.cookie.split(";");
 
-   for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i];
-      const eqPos = cookie.indexOf("=");
-      const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-   }
-};
-
-export { setCookie, getCookie };
+export { setCookie, getCookie, setCookieAuth };

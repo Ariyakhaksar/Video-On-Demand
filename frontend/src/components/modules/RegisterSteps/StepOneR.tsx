@@ -1,6 +1,7 @@
 import CustomButton from "@/components/elements/LoginButton";
 import { RegisterUserSendOTP } from "@/services/auth";
 import { validateRegisterStepOne } from "@/utils/auth";
+import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -24,36 +25,38 @@ const StepOneR = ({ setResult, setRegisterStepsNum }: Props) => {
       validate: validateRegisterStepOne,
       onSubmit: async (values: { phone: string }) => {
          setIsloading(true);
-         const response = await RegisterUserSendOTP(values);
-         if (response.error) {
-            console.log(response.error)
-            if (response.error.response.status === 302) {
-               setResult({ text: "کد با موفقیت ارسال شد", status: "success" });
-               toast.success("کد با موفقیت ارسال شد");
-               setResult({
-                  text: "",
-                  status: null,
-               });
-               setTimeout(() => {
-                  setRegisterStepsNum(2);
-               }, 1000);
-               setIsloading(false);
-            } else if (response.error.response.status === 400) {
-               setResult({
-                  text: "شماره موبایل قبلا ثبت شده است !",
-                  status: "error",
-               });
-               // toast.error("شماره موبایل قبلا ثبت شده است !");
-               setIsloading(false);
-            }
-         } else {
-            setResult({
-               text: "مشکلی از سمت سرور پیش آمده است بعدا امتحان کنید !",
-               status: "error",
-            });
-            // toast.error("مشکلی از سمت سرور پیش آمده است بعدا امتحان کنید !");
-            setIsloading(false);
-         }
+         const response = await RegisterUserSendOTP(values)
+         // if (response.error) {
+         //    console.log(response.error)
+         //    if (response.error.response.status === 302) {
+         //       setResult({ text: "کد با موفقیت ارسال شد", status: "success" });
+         //       toast.success("کد با موفقیت ارسال شد");
+         //       setResult({
+         //          text: "",
+         //          status: null,
+         //       });
+         //       setTimeout(() => {
+         //          setRegisterStepsNum(2);
+         //       }, 1000);
+         //       setIsloading(false);
+         //    } else if (response.error.response.status === 400) {
+         //       setResult({
+         //          text: "شماره موبایل قبلا ثبت شده است !",
+         //          status: "error",
+         //       });
+         //       // toast.error("شماره موبایل قبلا ثبت شده است !");
+         //       setIsloading(false);
+         //    }
+         // } else {
+         //    setResult({
+         //       text: "مشکلی از سمت سرور پیش آمده است بعدا امتحان کنید !",
+         //       status: "error",
+         //    });
+         //    // toast.error("مشکلی از سمت سرور پیش آمده است بعدا امتحان کنید !");
+         //    setIsloading(false);
+         // }
+         console.log(response);
+         setRegisterStepsNum(2);
       },
    });
    const { handleSubmit, handleChange, values, errors, touched } = LoginFormik;

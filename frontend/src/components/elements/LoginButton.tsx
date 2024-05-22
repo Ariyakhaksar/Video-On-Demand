@@ -23,6 +23,25 @@ const LoadingCButton = styled(LoadingButton)<LoadingButtonProps>(
       },
    })
 );
+export const LoadingCButton2 = styled(LoadingButton)<LoadingButtonProps>(
+   ({ theme }) => ({
+      width: "100%",
+      color: "#fff",
+      padding: "0.3rem 1.25rem",
+      backgroundColor: "#4f46e5",
+      borderRadius: "13px",
+      transition: "all 0.3s ease-in",
+      "&:hover": {
+         backgroundColor: "#4f46e5",
+         opacity: "0.80",
+      },
+      "&:disabled": {
+         backgroundColor: "#4e46e597",
+         color : "#e4e4e7",
+         opacity : "0.5"
+      },
+   })
+);
 type props = {
    children: React.ReactNode;
    loading?: boolean;

@@ -1,5 +1,15 @@
 import { FormikErrors, FormikTouched } from "formik";
-
+export interface UserData {
+   phone: string;
+   name: string;
+   lastname: string;
+   email: string;
+   is_admin: boolean;
+}
+export interface AuthResponse {
+   access: string;
+   refresh: string;
+ }
 export type TokenDetails = {
    user_id: number;
    phone: string;

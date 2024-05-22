@@ -1,6 +1,7 @@
 "use client";
 import IconButtons from "@/components/elements/IconButtons";
 import CustomButton from "@/components/elements/LoginButton";
+import ModeSwitch from "@/components/elements/ModeSwitch";
 import { AxiosResponse } from "axios";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
@@ -71,6 +72,7 @@ const Header = ({}: Props) => {
                <div className="lg:hidden inline-block">
                   <IconButtons tooltip_text="" icon={<FaBars />} />
                </div>
+               <ModeSwitch />
                <IconButtons tooltip_text="جست و جو" icon={<RiSearch2Line />} />
                <Link
                   href={"/auth/signin"}
