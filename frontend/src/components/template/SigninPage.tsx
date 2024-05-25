@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomButton from "../elements/LoginButton";
 import { useFormik } from "formik";
 import Link from "next/link";
@@ -9,16 +9,26 @@ import { LoginUserApi } from "@/services/auth";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { setCookieAuth } from "@/utils/cookie";
+import useAuth from "@/hooks/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {};
 
 const SigninPage = (props: Props) => {
+   const { data, isLoading: authLoading } = useAuth();
+   const router = useRouter();
+   useEffect(() => {
+      if (data && !authLoading) {
+         return router.push("/dashboard", { scroll: false });
+      }
+   });
+   const queryClient = useQueryClient();
+
    const [isLoading, setIsLoading] = useState(false);
    const [result, setResult] = useState({
       text: "",
       status: 0,
    });
-   const router = useRouter();
    const LoginFormik = useFormik({
       initialValues: {
          phone: "",
@@ -35,7 +45,8 @@ const SigninPage = (props: Props) => {
             });
             setCookieAuth(res?.data);
             setTimeout(() => {
-               router.push("/dashboard");
+               queryClient.refetchQueries({ queryKey: ["profile"] });
+               // router.push("/", { scroll: false });
             }, 1000);
          } else {
             setIsLoading(false);

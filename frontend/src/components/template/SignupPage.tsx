@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import CustomButton from "../elements/LoginButton";
 import { useRouter } from "next/navigation";
@@ -8,12 +8,19 @@ import PSRegister from "../elements/PSRegister";
 import StepOneR from "../modules/RegisterSteps/StepOneR";
 import StepTwoR from "../modules/RegisterSteps/StepTwoR";
 import InOut from "@/animations/InOut";
-import { Toaster } from 'react-hot-toast';
-
+import { Toaster } from "react-hot-toast";
+import useAuth from "@/hooks/useAuth";
 
 type Props = {};
 
 const SignupPage = (props: Props) => {
+   const { data, isLoading: authLoading } = useAuth();
+   const router = useRouter();
+   useEffect(() => {
+      if (data && !authLoading) {
+         return router.push("/dashboard", { scroll: false });
+      }
+   });
    const [registerStepsNum, setRegisterStepsNum] = useState(1);
    const [result, setResult] = useState<{
       text: string;
@@ -22,10 +29,9 @@ const SignupPage = (props: Props) => {
       text: "",
       status: null,
    });
-   const router = useRouter();
    return (
       <section className="w-full relative min-h-[80vh] z-[0] bg-[url('/images/three-colors-red01.jpg')] sm:bg-[url('/images/three-colors-red.jpg')] bg-cover bg-center">
-         <Toaster position="top-right"  />
+         <Toaster position="top-right" />
          <span className="w-full h-full absolute top-0 bg-zinc-950 opacity-80 z-[-1]"></span>
          <div className="text-zinc-100 mx-auto flex flex-col items-center h-full w-full ">
             <div className=" mt-5 sm:mt-10 text-3xl font-bold">LOGO</div>
@@ -40,7 +46,6 @@ const SignupPage = (props: Props) => {
                <div>
                   <AlertAuth result={result} />
 
-                 
                   {registerStepsNum === 1 && (
                      <InOut>
                         <StepOneR

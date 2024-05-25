@@ -27,5 +27,8 @@ const getCookie = (cookieName: string) => {
       ?.split("=")[1];
 };
 
+const removeCookie = (cookieName: string) => {
+   Cookies.remove(cookieName);
+};
 
-export { setCookie, getCookie, setCookieAuth };
+export { setCookie, getCookie, setCookieAuth , removeCookie };
