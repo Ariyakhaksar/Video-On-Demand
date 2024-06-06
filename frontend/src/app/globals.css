@@ -2,13 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-
-*{
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+* {
+   padding: 0;
+   margin: 0;
+   box-sizing: border-box;
 }
 
-.otpInputBoxError input{
-  border: 2px solid #f87171;
+.otpInputBoxError input {
+   border: 2px solid #f87171;
+}
+
+@layer components {
+   .custom-pagination .swiper-pagination-bullet {
+      @apply bg-gray-300 opacity-100;
+   }
+
+   .custom-pagination .swiper-pagination-bullet-active {
+      @apply bg-orange-400;
+   }
 }
